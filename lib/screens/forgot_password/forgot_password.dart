@@ -1,10 +1,16 @@
-import 'package:fitness/screens/qr/qr.dart';
-import 'package:fitness/screens/logins/ig.dart';
+// import 'package:fitness/screens/qr/qr.dart';
+import 'dart:convert';
+
+import 'package:fitness/api/services/api.dart';
+
 import 'package:fitness/screens/logins/sign_in.dart';
 import 'package:fitness/screens/logins/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+
+import 'otpscreen.dart';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({Key? key}) : super(key: key);
@@ -14,9 +20,10 @@ class ForgotPassword extends StatefulWidget {
 }
 
 class _ForgotPasswordState extends State<ForgotPassword> {
+  // String? email;
   final _formKey = GlobalKey<FormState>();
   TextEditingController textEditingController1 = TextEditingController();
-  TextEditingController textEditingController2 = TextEditingController();
+  // TextEditingController textEditingController2 = TextEditingController();
   bool _passwordVisible = false;
 
   final ButtonStyle style = ElevatedButton.styleFrom(
@@ -71,108 +78,111 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   autofocus: true,
                   style: const TextStyle(color: Colors.white),
                   controller: textEditingController1,
-                  decoration: const InputDecoration(
-                      suffixIcon:
-                          Icon(Icons.phone_iphone, color: Color(0xff777777)),
-                      enabledBorder: OutlineInputBorder(
+                  decoration: InputDecoration(
+                      suffixIcon: const Icon(Icons.phone_iphone,
+                          color: Color(0xff777777)),
+                      enabledBorder: const OutlineInputBorder(
                         borderSide: BorderSide(
                           color: Color(0xff777777),
                         ),
                       ),
-                      border: OutlineInputBorder(),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        borderSide: const BorderSide(color: Colors.white),
+                      ),
+                      border: const OutlineInputBorder(),
                       labelText: 'PHONE NUMBER / EMAIL',
                       hintText: '9876543210/test@gmail.com'),
-                  validator: (val) => val!.isEmpty
-                      ? 'Please provide a valid Phonenumber or email !'
-                      : null,
+                  validator: (val) =>
+                      val!.isEmpty ? 'Please provide a validemail !' : null,
                 ),
               ),
               const SizedBox(
                 height: 10,
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20),
-                child: TextFormField(
-                  keyboardType: TextInputType.text,
-                  style: const TextStyle(color: Colors.white),
-                  controller: textEditingController2,
-                  obscureText:
-                      !_passwordVisible, //This will obscure text dynamically
-                  decoration: InputDecoration(
-                    enabledBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0xff777777),
-                      ),
-                    ),
-                    labelText: 'PASSWORD',
-                    border: const OutlineInputBorder(),
+              // Padding(
+              //   padding: const EdgeInsets.only(left: 20, right: 20),
+              //   child: TextFormField(
+              //     keyboardType: TextInputType.text,
+              //     style: const TextStyle(color: Colors.white),
+              //     controller: textEditingController2,
+              //     obscureText:
+              //         !_passwordVisible, //This will obscure text dynamically
+              //     decoration: InputDecoration(
+              //       enabledBorder: const OutlineInputBorder(
+              //         borderSide: BorderSide(
+              //           color: Color(0xff777777),
+              //         ),
+              //       ),
+              //       labelText: 'PASSWORD',
+              //       border: const OutlineInputBorder(),
 
-                    hintText: 'Enter your password',
+              //       hintText: 'Enter your password',
 
-                    // Here is key idea
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        // Based on passwordVisible state choose the icon
-                        _passwordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                        color: _passwordVisible
-                            ? Colors.blue[100]
-                            : const Color(0xff777777),
-                      ),
-                      onPressed: () {
-                        // Update the state i.e. toogle the state of passwordVisible variable
-                        setState(() {
-                          _passwordVisible = !_passwordVisible;
-                        });
-                      },
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20),
-                child: TextFormField(
-                  keyboardType: TextInputType.text,
-                  style: const TextStyle(color: Colors.white),
-                  controller: textEditingController2,
-                  obscureText:
-                      !_passwordVisible, //This will obscure text dynamically
-                  decoration: InputDecoration(
-                    enabledBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0xff777777),
-                      ),
-                    ),
-                    labelText: 'CONFIRM PASSWORD',
-                    border: const OutlineInputBorder(),
+              //       // Here is key idea
+              //       suffixIcon: IconButton(
+              //         icon: Icon(
+              //           // Based on passwordVisible state choose the icon
+              //           _passwordVisible
+              //               ? Icons.visibility
+              //               : Icons.visibility_off,
+              //           color: _passwordVisible
+              //               ? Colors.blue[100]
+              //               : const Color(0xff777777),
+              //         ),
+              //         onPressed: () {
+              //           // Update the state i.e. toogle the state of passwordVisible variable
+              //           setState(() {
+              //             _passwordVisible = !_passwordVisible;
+              //           });
+              //         },
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              // const SizedBox(
+              //   height: 10,
+              // ),
+              // Padding(
+              //   padding: const EdgeInsets.only(left: 20, right: 20),
+              //   child: TextFormField(
+              //     keyboardType: TextInputType.text,
+              //     style: const TextStyle(color: Colors.white),
+              //     controller: textEditingController2,
+              //     obscureText:
+              //         !_passwordVisible, //This will obscure text dynamically
+              //     decoration: InputDecoration(
+              //       enabledBorder: const OutlineInputBorder(
+              //         borderSide: BorderSide(
+              //           color: Color(0xff777777),
+              //         ),
+              //       ),
+              //       labelText: 'CONFIRM PASSWORD',
+              //       border: const OutlineInputBorder(),
 
-                    hintText: 'Enter your password',
+              //       hintText: 'Enter your password',
 
-                    // Here is key idea
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        // Based on passwordVisible state choose the icon
-                        _passwordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                        color: _passwordVisible
-                            ? Colors.blue[100]
-                            : const Color(0xff777777),
-                      ),
-                      onPressed: () {
-                        // Update the state i.e. toogle the state of passwordVisible variable
-                        setState(() {
-                          _passwordVisible = !_passwordVisible;
-                        });
-                      },
-                    ),
-                  ),
-                ),
-              ),
+              //       // Here is key idea
+              //       suffixIcon: IconButton(
+              //         icon: Icon(
+              //           // Based on passwordVisible state choose the icon
+              //           _passwordVisible
+              //               ? Icons.visibility
+              //               : Icons.visibility_off,
+              //           color: _passwordVisible
+              //               ? Colors.blue[100]
+              //               : const Color(0xff777777),
+              //         ),
+              //         onPressed: () {
+              //           // Update the state i.e. toogle the state of passwordVisible variable
+              //           setState(() {
+              //             _passwordVisible = !_passwordVisible;
+              //           });
+              //         },
+              //       ),
+              //     ),
+              //   ),
+              // ),
               const SizedBox(
                 height: 10,
               ),
@@ -182,7 +192,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   width: double.infinity,
                   child: ElevatedButton(
                     style: style,
-                    onPressed: () {},
+                    onPressed: () {
+                      FocusScopeNode currentFocus = FocusScope.of(context);
+                      if (_formKey.currentState!.validate() &&
+                          !currentFocus.hasPrimaryFocus) {
+                        forgotPassword(textEditingController1.text);
+                        currentFocus.unfocus();
+                      }
+                    },
                     child: const Text(
                       'SUBMIT',
                       style: TextStyle(
@@ -288,9 +305,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     ),
                   ),
                   IconButton(
-                    onPressed: () {
-                      Get.to(const InstaGram());
-                    },
+                    onPressed: () {},
                     icon: Image.asset(
                       'assets/ig.png',
                       color: const Color(0xff777777),
@@ -303,5 +318,48 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         ),
       ),
     );
+  }
+
+  Future<void> forgotPassword(String email) async {
+    Map data = {
+      'email': email,
+    };
+    var result = await http.post(
+      Uri.parse(ApiService.forgotPassword),
+      body: data,
+    );
+    print(result.body);
+    print(result.statusCode);
+    var getData = json.decode(result.body)["message"];
+    if (result.statusCode == 200) {
+      if (getData == "The provided credentials are incorrect.") {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.red,
+            content: Text(
+              getData.toString(),
+            ),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.teal,
+            content: Text(
+              getData.toString(),
+            ),
+          ),
+        );
+        Get.to(() => OtpScreen(
+              email: '',
+            ));
+      }
+    } else if (result.statusCode == 500) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: Colors.green,
+          content: Text(
+            'Some thing wrong',
+          )));
+    }
   }
 }

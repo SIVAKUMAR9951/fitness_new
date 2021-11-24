@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:fitness/controller/userprofile_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,25 +14,17 @@ class UserProfile extends StatefulWidget {
   _UserProfileState createState() => _UserProfileState();
 }
 
-String? id;
-String? profilename;
-String? email;
-String? phone;
-String? imagepic;
-
 class _UserProfileState extends State<UserProfile> {
-  // @override
-  // void initState() {
-  //   print('nenu');
-  //   profileData();
-  //   super.initState();
-  // }
-
+  String? id;
+  String? profilename;
+  String? email;
+  String? phone;
+  String? imagepic;
+  bool isLoading = true;
   @override
-  void didChangeDependencies() {
-    print('nenu vachesaaa2');
+  void initState() {
     profileData();
-    super.didChangeDependencies();
+    super.initState();
   }
 
   @override
@@ -62,14 +55,22 @@ class _UserProfileState extends State<UserProfile> {
                 ),
               ]),
               Padding(
-                padding: EdgeInsets.only(right: 10, top: 10),
+                padding: const EdgeInsets.only(right: 10, top: 10),
                 child: Hero(
                   tag: 'user',
-                  child: CircleAvatar(
-                    radius: 30,
-                    backgroundImage: NetworkImage(imagepic ??
-                        'https://manofmany.com/wp-content/uploads/2021/01/Fitness-Trends-2021-c.jpg'),
-                  ),
+                  child: isLoading == false
+                      ? const Card(
+                          child: CircleAvatar(
+                            child: CircularProgressIndicator(
+                              color: Colors.red,
+                            ),
+                          ),
+                        )
+                      : CircleAvatar(
+                          radius: 30,
+                          backgroundImage: NetworkImage(imagepic ??
+                              'https://st3.depositphotos.com/9880800/15303/i/1600/depositphotos_153032898-stock-photo-sporty-people-exercising-in-gym.jpg'),
+                        ),
                 ),
               ),
             ],
@@ -78,7 +79,7 @@ class _UserProfileState extends State<UserProfile> {
         body: Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
-              fit: BoxFit.contain,
+              fit: BoxFit.scaleDown,
               image: ExactAssetImage(
                 'assets/uprofile.png',
               ),
@@ -207,11 +208,11 @@ class _UserProfileState extends State<UserProfile> {
 
   Future<void> profileData() async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
-    id = pref.getString("id")!.toString();
+    id = pref.getString("id").toString();
     print(id);
     Map data = {'user_id': id};
     var result = await http.post(
-      Uri.parse(ApiService.userprifile),
+      Uri.parse(ApiService.userprofile),
       body: data,
     );
     print(result.body);
@@ -224,6 +225,8 @@ class _UserProfileState extends State<UserProfile> {
         phone = json.decode(result.body)['data']['user']['mobile_no'];
         imagepic = json.decode(result.body)['data']['user']['image'];
       });
+
+      print(imagepic);
     }
   }
 }

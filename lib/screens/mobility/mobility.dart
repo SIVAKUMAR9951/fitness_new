@@ -105,7 +105,7 @@ class _MobilityState extends State<Mobility> {
           body: kvalue == '0'
               ? MobilityMain()
               : kvalue == '25'
-                  ? MobilityMid()
+                  ? const MobilityMid()
                   : kvalue == '50'
                       ? MobilitySmall()
                       : kvalue == '75'

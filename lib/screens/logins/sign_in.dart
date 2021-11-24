@@ -1,16 +1,14 @@
 import 'dart:convert';
-
 import 'package:fitness/api/services/api.dart';
 import 'package:fitness/screens/dashboard/main_dashboard.dart';
-import 'package:fitness/screens/qr/qr.dart';
-import 'package:fitness/screens/logins/ig.dart';
+import 'package:fitness/screens/forgot_password/forgot_password.dart';
 import 'package:fitness/screens/logins/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'forgot_password.dart';
+
 import 'package:http/http.dart' as http;
 
 class SignIn extends StatefulWidget {
@@ -97,21 +95,26 @@ class _SignInState extends State<SignIn> {
                   autofocus: true,
                   style: const TextStyle(color: Colors.white),
                   controller: emailController,
-                  decoration: const InputDecoration(
-                    suffixIcon:
-                        Icon(Icons.phone_iphone, color: Color(0xff777777)),
-                    enabledBorder: OutlineInputBorder(
+                  decoration: InputDecoration(
+                    focusColor: Colors.white,
+                    suffixIcon: const Icon(Icons.phone_iphone,
+                        color: Color(0xff777777)),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      borderSide: const BorderSide(color: Colors.white),
+                    ),
+                    enabledBorder: const OutlineInputBorder(
                       borderSide: BorderSide(
                         color: Color(0xff777777),
                       ),
                     ),
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
                     labelText: 'PHONE NUMBER / EMAIL',
                   ),
                 ),
               ),
               const SizedBox(
-                height: 10,
+                height: 15,
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20),
@@ -135,6 +138,10 @@ class _SignInState extends State<SignIn> {
                         color: Color(0xff777777),
                       ),
                     ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      borderSide: const BorderSide(color: Colors.white),
+                    ),
                     labelText: 'PASSWORD',
                     border: const OutlineInputBorder(),
                     suffixIcon: IconButton(
@@ -154,6 +161,9 @@ class _SignInState extends State<SignIn> {
                     ),
                   ),
                 ),
+              ),
+              const SizedBox(
+                height: 10,
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20),
@@ -273,9 +283,7 @@ class _SignInState extends State<SignIn> {
                     ),
                   ),
                   IconButton(
-                    onPressed: () {
-                      Get.to(const InstaGram());
-                    },
+                    onPressed: () {},
                     icon: Image.asset(
                       'assets/ig.png',
                       color: const Color(0xff777777),

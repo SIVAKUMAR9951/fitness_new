@@ -94,7 +94,7 @@ class WelcomeScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(
-                height: 60,
+                height: 40,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,

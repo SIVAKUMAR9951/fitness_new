@@ -1,34 +1,35 @@
-/// id : 1
-/// first_name : "jyoti"
-/// last_name : "patidar"
-/// name : "jyoti patidar"
-/// email : "jyoti@yopmail.com"
-/// mobile_no : "5555555555"
-/// dob : "2002-06-15 11:30:00"
-/// gender : null
+/// id : 28
+/// first_name : "trttt"
+/// last_name : "sdfdsf"
+/// name : "trttt sdfdsf"
+/// email : "jp464@gmail.com"
+/// mobile_no : "4546546798"
+/// dob : null
+/// gender : "f"
 /// mobile_otp : null
 /// email_verified_at : null
 /// profile_photo_path : null
 /// login_type : null
 /// social_media_id : null
-/// type : "2"
-/// status : "2"
+/// type : "3"
+/// status : "1"
 /// device_type : "1"
-/// device_id : "ffa54ddafc3c77f7"
-/// created_at : "2021-09-29T05:19:40.000000Z"
-/// updated_at : "2021-11-02T15:28:13.000000Z"
-/// image : null
+/// device_id : "sfffffffffff"
+/// created_at : "2021-11-01T16:57:04.000000Z"
+/// updated_at : "2021-11-16T18:21:56.000000Z"
+/// image : "http://fitness.kriyaninfotech.com/users/1637084057.png"
+/// skills : "hjjjj"
 
-class UserProfileModel {
-  UserProfileModel({
+class TrainerModel {
+  TrainerModel({
       int? id, 
       String? firstName, 
       String? lastName, 
       String? name, 
       String? email, 
       String? mobileNo, 
-      String? dob, 
-      dynamic gender, 
+      dynamic dob, 
+      String? gender, 
       dynamic mobileOtp, 
       dynamic emailVerifiedAt, 
       dynamic profilePhotoPath, 
@@ -40,7 +41,8 @@ class UserProfileModel {
       String? deviceId, 
       String? createdAt, 
       String? updatedAt, 
-      dynamic image,}){
+      String? image, 
+      String? skills,}){
     _id = id;
     _firstName = firstName;
     _lastName = lastName;
@@ -61,9 +63,10 @@ class UserProfileModel {
     _createdAt = createdAt;
     _updatedAt = updatedAt;
     _image = image;
+    _skills = skills;
 }
 
-  UserProfileModel.fromJson(dynamic json) {
+  TrainerModel.fromJson(dynamic json) {
     _id = json['id'];
     _firstName = json['first_name'];
     _lastName = json['last_name'];
@@ -84,6 +87,7 @@ class UserProfileModel {
     _createdAt = json['created_at'];
     _updatedAt = json['updated_at'];
     _image = json['image'];
+    _skills = json['skills'];
   }
   int? _id;
   String? _firstName;
@@ -91,8 +95,8 @@ class UserProfileModel {
   String? _name;
   String? _email;
   String? _mobileNo;
-  String? _dob;
-  dynamic _gender;
+  dynamic _dob;
+  String? _gender;
   dynamic _mobileOtp;
   dynamic _emailVerifiedAt;
   dynamic _profilePhotoPath;
@@ -104,7 +108,8 @@ class UserProfileModel {
   String? _deviceId;
   String? _createdAt;
   String? _updatedAt;
-  dynamic _image;
+  String? _image;
+  String? _skills;
 
   int? get id => _id;
   String? get firstName => _firstName;
@@ -112,8 +117,8 @@ class UserProfileModel {
   String? get name => _name;
   String? get email => _email;
   String? get mobileNo => _mobileNo;
-  String? get dob => _dob;
-  dynamic get gender => _gender;
+  dynamic get dob => _dob;
+  String? get gender => _gender;
   dynamic get mobileOtp => _mobileOtp;
   dynamic get emailVerifiedAt => _emailVerifiedAt;
   dynamic get profilePhotoPath => _profilePhotoPath;
@@ -125,7 +130,8 @@ class UserProfileModel {
   String? get deviceId => _deviceId;
   String? get createdAt => _createdAt;
   String? get updatedAt => _updatedAt;
-  dynamic get image => _image;
+  String? get image => _image;
+  String? get skills => _skills;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -149,6 +155,7 @@ class UserProfileModel {
     map['created_at'] = _createdAt;
     map['updated_at'] = _updatedAt;
     map['image'] = _image;
+    map['skills'] = _skills;
     return map;
   }
 

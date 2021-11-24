@@ -1,7 +1,8 @@
-import 'package:fitness/hello.dart';
+import 'package:fitness/screens/wod/wod_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:intl/intl.dart';
 
 class Wod extends StatefulWidget {
   const Wod({Key? key}) : super(key: key);
@@ -15,14 +16,51 @@ class _WodState extends State<Wod> {
   String? apointmentString;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SfCalendar(
-        onTap: (_) {
-          Get.to(Hello(subject: apointmentString));
-        },
-        view: CalendarView.month,
-        monthCellBuilder: monthCellBuilder,
-        dataSource: _getCalendarDataSource(),
+    return SafeArea(
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(100),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Wrap(children: [
+                IconButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    icon: const Icon(Icons.arrow_back_ios)),
+                const Padding(
+                  padding: EdgeInsets.only(top: 10),
+                  child: Hero(
+                    tag: 'wod',
+                    child: Text(
+                      'WOD',
+                      style: TextStyle(
+                          color: Color(0xff777777),
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 22),
+                    ),
+                  ),
+                ),
+              ]),
+            ],
+          ),
+        ),
+        body: Container(
+          color: Colors.red,
+          child: SfCalendar(
+            onTap: (CalendarTapDetails details) {
+              dynamic appointment = details.appointments!.toList();
+              Appointment? finalApp = appointment[0] as Appointment;
+              print("Url: " + finalApp.subject.toString());
+              Get.to(WodDetail(subject: finalApp));
+            },
+            view: CalendarView.day,
+            monthCellBuilder: monthCellBuilder,
+            dataSource: _getCalendarDataSource(),
+          ),
+        ),
       ),
     );
   }

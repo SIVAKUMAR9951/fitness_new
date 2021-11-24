@@ -19,35 +19,35 @@ class _NotificationsState extends State<Notifications> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(50),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Wrap(children: [
-                IconButton(
-                    onPressed: () {
-                      Get.back();
-                    },
-                    icon: const Icon(Icons.arrow_back_ios)),
-                const Hero(
-                  tag: 'notify',
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 10),
-                    child: Text(
-                      'NOTIFICATIONS',
-                      style: TextStyle(
-                          color: Color(0xff777777),
-                          fontFamily: 'Montserrat',
-                          fontWeight: FontWeight.bold,
-                          fontSize: 22),
-                    ),
-                  ),
-                ),
-              ]),
-            ],
-          ),
-        ),
+        // appBar: PreferredSize(
+        //   preferredSize: const Size.fromHeight(50),
+        //   child: Row(
+        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //     children: [
+        //       Wrap(children: [
+        //         IconButton(
+        //             onPressed: () {
+        //               Get.back();
+        //             },
+        //             icon: const Icon(Icons.arrow_back_ios)),
+        //         const Hero(
+        //           tag: 'notify',
+        //           child: Padding(
+        //             padding: EdgeInsets.only(top: 10),
+        //             child: Text(
+        //               'NOTIFICATIONS',
+        //               style: TextStyle(
+        //                   color: Color(0xff777777),
+        //                   fontFamily: 'Montserrat',
+        //                   fontWeight: FontWeight.bold,
+        //                   fontSize: 22),
+        //             ),
+        //           ),
+        //         ),
+        //       ]),
+        //     ],
+        //   ),
+        // ),
         body: Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
