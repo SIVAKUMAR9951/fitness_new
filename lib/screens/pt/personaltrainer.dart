@@ -1,13 +1,7 @@
-// import 'dart:html';
-import 'dart:convert';
-
-import 'package:http/http.dart' as http;
-import 'package:fitness/api/services/api.dart';
+import 'package:fitness/controller/trainer_controller.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-enum SingingCharacter { arnold, hruthik, john, sharukh }
 
 class PersonalTrainer extends StatefulWidget {
   const PersonalTrainer({Key? key}) : super(key: key);
@@ -16,15 +10,12 @@ class PersonalTrainer extends StatefulWidget {
   State<PersonalTrainer> createState() => _PersonalTrainerState();
 }
 
-String? id;
-String? ptName;
-
 class _PersonalTrainerState extends State<PersonalTrainer> {
-  SingingCharacter? _character = SingingCharacter.arnold;
-
+  final trainController = Get.put(TrainerController());
   @override
   void initState() {
-    personalTrainerData();
+    Get.put(TrainerController);
+
     super.initState();
   }
 
@@ -32,90 +23,113 @@ class _PersonalTrainerState extends State<PersonalTrainer> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(50),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Wrap(children: [
-                IconButton(
-                    onPressed: () {
-                      Get.back();
-                    },
-                    icon: const Icon(Icons.arrow_back_ios)),
-                const Hero(
-                  tag: 'pt',
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 10),
-                    child: Text(
-                      'PERSONAL TRAINER',
-                      style: TextStyle(
-                          color: Color(0xff777777),
-                          fontFamily: 'Montserrat',
-                          fontWeight: FontWeight.bold,
-                          fontSize: 22),
-                    ),
-                  ),
-                ),
-              ]),
-            ],
-          ),
-        ),
-        body: ListView.builder(
-          itemBuilder: (BuildContext context, int index) => Card(
-            elevation: 5,
-            // color: Colors.grey[200],
-            child: ListTile(
-              tileColor: Colors.grey[300],
-              leading: const CircleAvatar(
-                backgroundImage: AssetImage('assets/hd/11.jpg'),
-              ),
-              title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    columnWid('ARNOLD', 'FitnessSpecialist'),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    const Text('30days/50\$'),
-                  ]),
-              trailing: Radio<SingingCharacter>(
-                value: SingingCharacter.arnold,
-                groupValue: _character,
-                onChanged: (SingingCharacter? value) {
-                  setState(() {
-                    _character = value;
-                  });
-                },
-              ),
-            ),
-          ),
-          itemCount: 50,
-        ),
+        backgroundColor: Colors.grey[50],
+        body: Obx(() {
+          return trainController.postloading.value
+              ? Center(
+                  child: Image.network(
+                      'https://cdn.dribbble.com/users/26878/screenshots/3544693/07-loader.gif'),
+                )
+              : trainController.getTrainers.isEmpty
+                  ? const Center(
+                      child: Text(
+                        "No Data Found..",
+                      ),
+                    )
+                  : Column(children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Wrap(children: [
+                            IconButton(
+                                onPressed: () {
+                                  Get.back();
+                                },
+                                icon: const Icon(Icons.arrow_back_ios)),
+                            const Hero(
+                              tag: 'pt',
+                              child: Padding(
+                                padding: EdgeInsets.only(top: 10),
+                                child: Text(
+                                  'PERSONAL TRAINER',
+                                  style: TextStyle(
+                                      color: Color(0xff777777),
+                                      fontFamily: 'Montserrat',
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 22),
+                                ),
+                              ),
+                            ),
+                          ]),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 700,
+                        child: StaggeredGridView.countBuilder(
+                          crossAxisCount: 2,
+                          itemCount: trainController.getTrainers.length,
+                          itemBuilder: (BuildContext context, int index) =>
+                              InkWell(
+                            highlightColor: Colors.green[200],
+                            onTap: () {},
+                            child: Card(
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      child: SizedBox(
+                                        // height: 100,
+                                        width: double.infinity,
+                                        child: ClipRRect(
+                                          child: Image.network(
+                                              trainController
+                                                  .getTrainers[index].image
+                                                  .toString(),
+                                              fit: BoxFit.contain),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    columnWid(
+                                        trainController.getTrainers[index].name
+                                            .toString(),
+                                        trainController
+                                            .getTrainers[index].skills
+                                            .toString()),
+                                  ]),
+                            ),
+                          ),
+                          staggeredTileBuilder: (int index) =>
+                              StaggeredTile.count(1, index.isEven ? 1 : 0.75),
+                          mainAxisSpacing: 4.0,
+                          crossAxisSpacing: 4.0,
+                        ),
+                      ),
+                    ]);
+        }),
       ),
     );
   }
 
   Column columnWid(text1, text2) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           text1,
           style: const TextStyle(
-              color: Color(0xff777777),
+              color: Color(0xFF000000),
               fontFamily: 'Montserrat',
               fontWeight: FontWeight.bold,
               fontSize: 15),
         ),
-        const SizedBox(
-          height: 5,
-        ),
+        const SizedBox(),
         Text(
           text2,
           style: const TextStyle(
-            color: Color(0xff777777),
+            color: Color(0xFF000000),
             fontFamily: 'Montserrat',
             fontWeight: FontWeight.w500,
             fontSize: 15,
@@ -123,23 +137,5 @@ class _PersonalTrainerState extends State<PersonalTrainer> {
         ),
       ],
     );
-  }
-
-  Future<void> personalTrainerData() async {
-    final SharedPreferences pref = await SharedPreferences.getInstance();
-    id = pref.getString("id")!.toString();
-    print(id);
-    Map data = {'user_id': id, 'trainer_id': '3', 'membership_id': '1'};
-    var result = await http.post(
-      Uri.parse(ApiService.personalTrainer),
-      body: data,
-    );
-    print(result.body);
-    print(result.statusCode);
-
-    if (result.statusCode == 200) {
-      ptName = json.decode(result.body)['data']['bookTrainer']['updated_at'];
-      print(ptName);
-    }
   }
 }

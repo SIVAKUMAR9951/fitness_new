@@ -1,20 +1,36 @@
+import 'package:fitness/boaring.dart';
 import 'package:fitness/screens/dashboard/main_dashboard.dart';
+import 'package:fitness/screens/forgot_password/congrats.dart';
 import 'package:fitness/screens/logins/sign_in.dart';
 import 'package:fitness/screens/logins/sign_up.dart';
 import 'package:fitness/screens/logins/welcome.dart';
-import 'package:fitness/screens/splash.dart';
 import 'package:fitness/screens/userprofile/setting.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
+import 'intro_screen.dart';
+
 import 'screens/userprofile/user_profile.dart';
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  String? id;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,11 +45,20 @@ class MyApp extends StatelessWidget {
             fontFamily: 'Montserrat',
             primaryColor: Colors.black),
         theme: ThemeData(
+          inputDecorationTheme: const InputDecorationTheme(
+            floatingLabelStyle: TextStyle(color: Colors.white),
+          ),
           hintColor: Colors.grey[850],
           fontFamily: 'Montserrat',
           primarySwatch: Colors.blue,
         ),
-        home: const Splash(),
+        home: AnimatedSplashScreen(
+          splashIconSize: 750,
+          duration: 5000,
+          splash: const IntroScreen(),
+          nextScreen: const Boaring(),
+          backgroundColor: const Color(0xFF211f21),
+        ),
         routes: {
           '/signIn': (context) => const SignIn(),
           '/signUp': (context) => const SignUp(),
@@ -41,6 +66,7 @@ class MyApp extends StatelessWidget {
           '/userprofile': (context) => const UserProfile(),
           '/settings': (context) => const Settings(),
           '/mainDash': (context) => const MainDashBoard(),
+          '/congrats': (context) => const Congrats(),
         },
       ),
     );

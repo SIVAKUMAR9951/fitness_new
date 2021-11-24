@@ -335,7 +335,7 @@ class CalendarScreen extends StatefulWidget {
 
 class _CalendarScreenState extends State<CalendarScreen> {
   late final ValueNotifier<List<Event>> _selectedEvents;
-  CalendarFormat _calendarFormat = CalendarFormat.month;
+  CalendarFormat _calendarFormat = CalendarFormat.twoWeeks;
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
       .toggledOff; // Can be toggled on/off by longpressing a date
   DateTime _focusedDay = DateTime.now();
@@ -527,7 +527,7 @@ final kEvents = LinkedHashMap<DateTime, List<Event>>(
   hashCode: getHashCode,
 )..addAll(_kEventSource);
 
-final _kEventSource = Map.fromIterable(List.generate(50, (index) => index),
+final _kEventSource = Map.fromIterable(List.generate(10, (index) => index),
     key: (item) => DateTime.utc(kFirstDay.year, kFirstDay.month, item * 5),
     value: (item) => List.generate(
         item % 4 + 1, (index) => Event('Event $item | ${index + 1}')))

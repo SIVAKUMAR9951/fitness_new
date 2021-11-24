@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'package:fitness/api/services/api.dart';
 import 'package:http/http.dart' as http;
-import 'package:fitness/screens/qr/qr.dart';
-import 'package:fitness/screens/logins/ig.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -116,15 +115,19 @@ class _SignUpState extends State<SignUp> {
                   autofocus: true,
                   style: const TextStyle(color: Colors.white),
                   controller: emailController,
-                  decoration: const InputDecoration(
-                      suffixIcon:
-                          Icon(Icons.phone_iphone, color: Color(0xff777777)),
-                      enabledBorder: OutlineInputBorder(
+                  decoration: InputDecoration(
+                      suffixIcon: const Icon(Icons.phone_iphone,
+                          color: Color(0xff777777)),
+                      enabledBorder: const OutlineInputBorder(
                         borderSide: BorderSide(
                           color: Color(0xff777777),
                         ),
                       ),
-                      border: OutlineInputBorder(),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        borderSide: const BorderSide(color: Colors.white),
+                      ),
+                      border: const OutlineInputBorder(),
                       labelText: 'EMAIL',
                       hintText: 'test@gmail.com'),
                   validator: (val) => val!.isEmpty
@@ -141,15 +144,19 @@ class _SignUpState extends State<SignUp> {
                   autofocus: true,
                   style: const TextStyle(color: Colors.white),
                   controller: nameController,
-                  decoration: const InputDecoration(
-                      suffixIcon: Icon(Icons.account_circle_outlined,
+                  decoration: InputDecoration(
+                      suffixIcon: const Icon(Icons.account_circle_outlined,
                           color: Color(0xff777777)),
-                      enabledBorder: OutlineInputBorder(
+                      enabledBorder: const OutlineInputBorder(
                         borderSide: BorderSide(
                           color: Color(0xff777777),
                         ),
                       ),
-                      border: OutlineInputBorder(),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        borderSide: const BorderSide(color: Colors.white),
+                      ),
+                      border: const OutlineInputBorder(),
                       labelText: 'NAME',
                       hintText: 'USER NAME'),
                   validator: (val) =>
@@ -172,6 +179,10 @@ class _SignUpState extends State<SignUp> {
                       borderSide: BorderSide(
                         color: Color(0xff777777),
                       ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      borderSide: const BorderSide(color: Colors.white),
                     ),
                     labelText: 'PASSWORD',
                     border: const OutlineInputBorder(),
@@ -209,6 +220,7 @@ class _SignUpState extends State<SignUp> {
                 child: SizedBox(
                   width: double.infinity,
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       ElevatedButton(
                         style: style,
@@ -317,9 +329,7 @@ class _SignUpState extends State<SignUp> {
                     ),
                   ),
                   IconButton(
-                    onPressed: () {
-                      Get.to(const InstaGram());
-                    },
+                    onPressed: () {},
                     icon: Image.asset(
                       'assets/ig.png',
                       color: const Color(0xff777777),
@@ -344,12 +354,12 @@ class _SignUpState extends State<SignUp> {
         Uri.parse(ApiService.regApi),
         body: {
           'name': nameController.text,
-          'first_name': 'nameController.text',
+          'first_name': 'CD',
           'last_name': 'ponnuru',
           'email': emailController.text,
           'password': passwordController.text,
           'type': '2',
-          'dob': '2002-06-16',
+          'dob': '',
           'mobile_no': '99999999',
           'gender': 'M',
         },
